@@ -120,16 +120,14 @@ app.get("/api/prepareToExam", verifyToken, (req, res) => {
 
   // Kiểm tra xem subject có giá trị hợp lệ không
   if (subject === 'bmtt') {
-      res.sendFile(path.join(__dirname, "../frontend/pages/prepareToExamBMTT.html")); // Tệp HTML cho BẢO MẬT THÔNG TIN
+      res.sendFile(path.join(__dirname, "../frontend/pages/PrepareToExam/prepareToExamBMTT.html")); // Tệp HTML cho BẢO MẬT THÔNG TIN
   } else if (subject === 'ptdl') {
-      res.sendFile(path.join(__dirname, "../frontend/pages/prepareToExamPTDL.html")); // Tệp HTML cho PHÂN TÍCH HỆ QUẢN DỮ LIỆU
+      res.sendFile(path.join(__dirname, "../frontend/pages/PrepareToExam/prepareToExamPTDL.html")); // Tệp HTML cho PHÂN TÍCH HỆ QUẢN DỮ LIỆU
   } else {
       res.status(404).send('Môn học không hợp lệ'); // Xử lý lỗi nếu môn học không hợp lệ
   }
 });
-app.get("/api/prepareToExam",verifyToken, (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/pages/prepareToExam.html"));
-});
+
 
 app.post("/api/updateUser",verifyToken, async (req, res) => {
   const { name, dob, cccd, phone, email } = req.body;
@@ -167,7 +165,8 @@ app.get("/api/userInfo",verifyToken, async (req, res) => {
         email: user.email,
         cccd: user.cccd,
         phone: user.phonenumber,
-        score: user.score,
+        score1: user.score1,
+        score2: user.score2,
       },
     });
   } else {
@@ -178,11 +177,11 @@ app.get("/api/userInfo",verifyToken, async (req, res) => {
   }
 });
 
-app.get("/questions",verifyToken, async (req, res) => {
+app.get("/questions", verifyToken, async (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/pages/question.html"));
 });
 
-app.get("/api/questions",verifyToken, async (req, res) => {
+app.get("/api/questions", verifyToken, async (req, res) => {
   try {
     const questions = await Question.aggregate([{ $sample: { size: 10 } }]); // Lấy ngẫu nhiên 10 câu hỏi
     res.json(questions); // Gửi câu hỏi đến client
@@ -552,11 +551,7 @@ app.post("/api/result", verifyToken, async (req, res) => {
 
     // Cập nhật điểm số cho người dùng
     const user = await User.findById(req.userId);
-    if (score1 === undefined) {
-      user.score1 = score; // Cập nhật điểm
-    } else {
-      user.score2 = score;
-    }
+   
     
     await user.save();
 

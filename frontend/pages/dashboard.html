@@ -32,6 +32,7 @@
             font-size: 24px;
             color: white;
             font-weight: bold;
+            text-decoration: none;
         }
 
         /* Nút đăng xuất */
@@ -227,7 +228,8 @@
                         CCCD: ${data.user.cccd} <br>
                         Email: ${data.user.email} <br>
                         Điện thoại: ${data.user.phone} <br>
-                        Điểm: ${data.user.score}
+                        Điểm BMTT: ${data.user.score1} <br>
+                        Điểm PTDL: ${data.user.score2}
                     `;
                     if (data.user.score1 !== undefined) {
                         document.getElementById('link1').classList.add('hidden');
