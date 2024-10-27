@@ -15,7 +15,6 @@
             flex-direction: column;
             min-height: 100vh;
             align-items: center;
-            justify-content: center;
             margin: 0;
         }
 
@@ -26,27 +25,59 @@
             left: 0;
             right: 0;
             background-color: #4CAF50;
-            padding: 15px 0;
+            padding: 15px 20px;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             z-index: 1000;
-            font-size: 24px;
             color: white;
             font-weight: bold;
+            text-align: center;
+        }
+
+        /* Căn giữa logo */
+        .dashboard .logo {
+            font-size: 24px;
             text-decoration: none;
+            color: white;
+        }
+
+        /* Định vị các nút Đăng ký, Đăng nhập ở góc phải */
+        .auth-buttons {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .auth-buttons .button {
+            padding: 8px 16px;
+            color: white;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .auth-buttons .button:hover {
+            background-color: #45a049;
         }
 
         /* Phần nội dung chính */
         .content {
             text-align: center;
-            max-width: 600px;
-            padding-top: 80px;
+            max-width: 800px;
+            padding-top: 100px;
         }
 
         /* Phong cách cho văn bản nổi bật */
         .highlight-text {
-            color: #46404a; /* Màu tím nhạt */
+            color: #46404a;
             font-weight: bold;
             font-size: 1.1rem;
             text-decoration: none;
@@ -55,9 +86,6 @@
             margin-bottom: 20px;
         }
 
-        /* Hiệu ứng hover cho liên kết */
-      
-
         /* Phong cách cho tiêu đề chính */
         h1 {
             color: #1f6f1f;
@@ -65,25 +93,64 @@
             margin-bottom: 10px;
         }
 
-        /* Phong cách cho nút */
-        .button {
-            margin: 10px;
-            padding: 12px 24px;
-            color: white;
-            background-color: #4CAF50;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 18px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+        /* Phần thẻ testimonial */
+        .card-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 20px 0;
         }
 
-        /* Hiệu ứng hover cho nút */
-        .button:hover {
-            background-color: #45a049;
-            transform: translateY(-2px);
-            box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            padding: 20px;
+            border-top: 4px solid;
+        }
+
+        .card:nth-child(1) {
+            border-color: #FF5A5F;
+        }
+
+        .card:nth-child(2) {
+            border-color: #00A4CC;
+        }
+
+        .card:nth-child(3) {
+            border-color: #FFA726;
+        }
+
+        .card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            font-size: 1.2em;
+            margin: 0;
+            color: #333;
+        }
+
+        .card p.position {
+            color: #666;
+            font-size: 0.9em;
+            margin: 5px 0 15px;
+        }
+
+        .card p.quote {
+            font-size: 0.95em;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .highlight {
+            color: #FF5A5F;
+            font-weight: bold;
         }
 
         /* Căn chỉnh footer ở dưới cùng */
@@ -116,29 +183,44 @@
 
 <body>
     <!-- Thanh tiêu đề -->
-    <header>
-        <a class="dashboard" href="/">DDH</a>
+    <header class="dashboard">
+        <a href="/" class="logo">DDH</a>
+        <div class="auth-buttons">
+            <a href="/signup" class="button">Đăng ký</a>
+            <a href="/login" class="button">Đăng nhập</a>
+        </div>
     </header>
 
     <!-- Nội dung chính -->
     <div class="content">
         <a href="#" class="highlight-text">#1 Nền tảng thi trắc nghiệm online tốt nhất</a>
-        <h1>Chào mừng đến với DDH !</h1>
-        <p class="highlight-text">Giải pháp tạo đề thi chứng chỉ nhanh chóng và dễ dàng  . Tận dụng sức mạnh công nghệ để  trải nghiệm học tập của bạn ngay hôm nay.</p>
-        <button class="button" id="signupBtn">Đăng ký</button>
-        <button class="button" id="loginBtn">Đăng nhập</button>
+        <h1>Chào mừng đến với DDH!</h1>
+        <p class="highlight-text">Giải pháp tạo đề thi chứng chỉ nhanh chóng và dễ dàng. Tận dụng sức mạnh công nghệ để trải nghiệm học tập của bạn ngay hôm nay.</p>
     </div>
 
-    <script>
-        document.getElementById('signupBtn').onclick = function () {
-            alert('Đi tới trang đăng ký');
-            window.location.href = '/signup';
-        };
-        document.getElementById('loginBtn').onclick = function () {
-            alert('Đi tới trang đăng nhập');
-            window.location.href = '/login';
-        };
-    </script>
+    <!-- Thẻ lời chứng thực -->
+    <div class="card-container">
+        <div class="card">
+            <img src="https://scontent.fsgn20-1.fna.fbcdn.net/v/t39.30808-6/355165989_1377983016383877_6843295191511244706_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeE9d3LZR4hhrdV9YqmQYLTRIwKcALxC76IjApwAvELvoq_3bnwvTsDG-1-kcyvFSNukpsKX1ICZHKNIdvERkP5b&_nc_ohc=N81tWubfVa8Q7kNvgHBBZXS&_nc_zt=23&_nc_ht=scontent.fsgn20-1.fna&_nc_gid=AYBQmPkZJmbIzYEslEK6tk4&oh=00_AYCMd1QRtD6IU4UIgnOJdkq_ZpkVvyZkuHdpvZV8Vape8w&oe=6723AC65" alt="Phan Tiến Dũng">
+            <h3>Phan Tiến Dũng</h3>
+            <p class="position">Sinh viên</p>
+            <p class="quote">"Thể thao và hoạt động ngoài trời: Nhiều sinh viên thích tham gia các hoạt động thể thao như bóng đá, bóng chuyền, bóng rổ, cầu lông hoặc chạy bộ để . <span class="highlight">Rèn luyện sức khỏe, giảm căng thẳng sau giờ học.</span>"</p>
+        </div>
+        
+        <div class="card">
+            <img src="./picture/file-3tX1iX6x5sjO5pEcaWmkj7QH.png" alt="Bùi Thành Đạt">
+            <h3>Bùi Thành Đạt</h3>
+            <p class="position">Sinh viên</p>
+            <p class="quote">"<span class="highlight">Đọc sách và nghiên cứu:</span> Sinh viên yêu thích đọc sách không chỉ giới hạn ở tài liệu học tập mà còn mở rộng ra các thể loại khác như tiểu thuyết, sách kỹ năng, sách tư duy hoặc khoa học phổ thông để nâng cao kiến thức và mở rộng tư duy."</p>
+        </div>
+        
+        <div class="card">
+            <img src="./picture/hcm.jpg" alt="Lê Việt Hoàng">
+            <h3>Lê Việt Hoàng</h3>
+            <p class="position">Sinh viên</p>
+            <p class="quote">"Tham gia hoạt động tình nguyện.<span class="highlight">Rất nhiều sinh viên yêu thích các hoạt động tình nguyện</span> ,vì nó giúp họ đóng góp cho cộng đồng, học cách làm việc nhóm và phát triển các kỹ năng mềm."</p>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer>

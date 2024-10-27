@@ -88,6 +88,12 @@
     </form>
 
     <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                subject: params.get('subject')
+            };
+        }
         const quizDuration = 600; // Thời gian thi (600 giây = 10 phút)
         let timeLeft = quizDuration;
 
@@ -106,11 +112,11 @@
             }
         }
 
-        // Gọi hàm cập nhật bộ đếm mỗi giây
+        // Gọi hàm cập nhật bộ đếm mỗi giây     
         setInterval(updateCountdown, 1000);
 
         // Lấy câu hỏi từ server và hiển thị
-        fetch('/api/questions')
+        fetch('/api/questions?subject=' + getQueryParams().subject)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -145,7 +151,7 @@
                 data[key] = value; // key là _id của câu hỏi
             }
 
-            fetch('/api/result', {
+            fetch('/api/result?subject=' + getQueryParams().subject,{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -131,6 +131,12 @@
     </div>
 
     <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                subject: params.get('subject')
+            };
+        }
         async function fetchUserInfo() {
             try {
                 const response = await fetch("/api/userInfo", {
@@ -159,7 +165,7 @@
 
                 const data = await response.json();
                 if (data.success) {
-                    window.location.href = "/questions"; // Chuyển hướng đến trang câu hỏi
+                    window.location.href = "/questions?subject=" + getQueryParams().subject; // Chuyển hướng đến trang câu hỏi
                 } else {
                     console.error("Không thể bắt đầu thi:", data.message);
                 }

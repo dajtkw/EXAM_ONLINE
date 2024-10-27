@@ -9,6 +9,6 @@ const questionSchema = new mongoose.Schema(
 
 );
 
-const Question1 = mongoose.model("Question", questionSchema);
+const Question2 = mongoose.model("myQuestions", questionSchema, );
 
-export default Question1;
+export default Question2;

@@ -9,7 +9,6 @@ import dotenv from "dotenv";
 import rateLimit from "express-rate-limit";
 
 import User from "./models/user.model.js";
-import Question from "./models/question.model.js";
 import { connectDB } from "./lib/db.js";
 import { fileURLToPath } from "url";
 import { verifyToken } from "./middleware/verifyToken.js";
@@ -20,6 +19,8 @@ import {
   sendVerificationEmail,
   sendWelcomeEmail,
 } from "./mail/email.js";
+import Question2 from "./models/question2.model.js";
+import Question1 from "./models/question.model.js";
 
 
 dotenv.config(); // Gọi config để tải các biến môi trường từ file .env
@@ -81,7 +82,7 @@ app.get("/login",checkAuthenticated,apiLimiter, (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/pages/Login.html"));
 });
 
-app.get("/signup",checkAuthenticated,  (req, res) => {
+app.get("/signup",checkAuthenticated,apiLimiter,  (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/pages/SignUp.html"));
 });
 
@@ -95,7 +96,7 @@ app.get("/verify-email-login",checkAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/pages/VerifyEmailLogin.html"));
 });
 
-app.get("/forgot-password",checkAuthenticated, (req, res) => {
+app.get("/forgot-password",checkAuthenticated,apiLimiter, (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/pages/ForgotPassword.html"));
 });
 
@@ -115,19 +116,12 @@ app.get("/dashboard",verifyToken, (req, res) => {
 });
 
 app.get("/api/prepareToExam", verifyToken, (req, res) => {
-  // Lấy tham số từ query
-  const subject = req.query.subject; // 'bmtt' hoặc 'ptdl'
-
-  // Kiểm tra xem subject có giá trị hợp lệ không
-  if (subject === 'bmtt') {
-      res.sendFile(path.join(__dirname, "../frontend/pages/PrepareToExam/prepareToExamBMTT.html")); // Tệp HTML cho BẢO MẬT THÔNG TIN
-  } else if (subject === 'ptdl') {
-      res.sendFile(path.join(__dirname, "../frontend/pages/PrepareToExam/prepareToExamPTDL.html")); // Tệp HTML cho PHÂN TÍCH HỆ QUẢN DỮ LIỆU
-  } else {
-      res.status(404).send('Môn học không hợp lệ'); // Xử lý lỗi nếu môn học không hợp lệ
-  }
+  res.sendFile(path.join(__dirname, "../frontend/pages/prepareToExam.html"));
 });
 
+app.get("/update_user",verifyToken, (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/pages/updateInfo.html"));
+});
 
 app.post("/api/updateUser",verifyToken, async (req, res) => {
   const { name, dob, cccd, phone, email } = req.body;
@@ -182,11 +176,24 @@ app.get("/questions", verifyToken, async (req, res) => {
 });
 
 app.get("/api/questions", verifyToken, async (req, res) => {
+  const { subject } = req.query; // Thay vì req.params, hãy dùng req.query để lấy tham số truy vấn
+
   try {
-    const questions = await Question.aggregate([{ $sample: { size: 10 } }]); // Lấy ngẫu nhiên 10 câu hỏi
-    res.json(questions); // Gửi câu hỏi đến client
+      let questions;
+      if (subject === "bmtt") {
+          questions = await Question1.aggregate([{ $sample: { size: 10 } }]); // Lấy ngẫu nhiên 10 câu hỏi
+      } else if (subject === "ptdl") {
+          questions = await Question2.aggregate([{ $sample: { size: 10 } }]); // Lấy ngẫu nhiên 10 câu hỏi
+      } else {
+          return res.status(400).json({ message: "Môn học không hợp lệ." });
+      }
+      
+      // Chỉ giữ lại trường cần thiết cho client, không gửi "answer"
+      const filteredQuestions = questions.map(({ answer, ...rest }) => rest);
+      
+      res.json(filteredQuestions); // Gửi câu hỏi đã lọc đến client
   } catch (error) {
-    res.status(500).json({ message: "Có lỗi xảy ra khi lấy câu hỏi." });
+      res.status(500).json({ message: "Có lỗi xảy ra khi lấy câu hỏi." });
   }
 });
 app.post("/signup", async (req, res) => {
@@ -469,7 +476,7 @@ app.post("/reset-password/:token", async (req, res) => {
 });
 
 // //Thêm câu hỏi
-// app.post("/api/questions", async (req, res) => {
+// app.post("/api/myquestions", async (req, res) => {
 //   const questions = req.body; // expecting an array of question objects
 //   console.log("Received:", questions);
 
@@ -490,7 +497,7 @@ app.post("/reset-password/:token", async (req, res) => {
 
 //   try {
 //     // Insert all questions using insertMany
-//     const newQuestions = await Question.insertMany(questions);
+//     const newQuestions = await Question2.insertMany(questions);
 //     res
 //       .status(201)
 //       .send(`${newQuestions.length} questions added successfully!`);
@@ -531,34 +538,44 @@ app.post("/api/prepareToExam",verifyToken, async (req, res) => {
 });
 
 app.post("/api/result", verifyToken, async (req, res) => {
+  const { subject } = req.query; // Thay vì req.params, hãy dùng req.query để lấy tham số truy vấn
   try {
-    const userAnswers = req.body; // Nhận câu trả lời của người dùng
-    const questionIds = Object.keys(userAnswers);
-
-    // Lấy các câu hỏi từ database
-    const questions = await Question.find({ _id: { $in: questionIds } });
-
-    let score = 0;
-    questions.forEach((question) => {
-      const userAnswer = userAnswers[question._id]; // Lấy câu trả lời của người dùng theo _id
-      console.log(
-        `User answer: ${userAnswer}, Correct answer: ${question.answer}`
-      );
-      if (userAnswer === question.answer) {
-        score++;
+      const userAnswers = req.body; // Nhận câu trả lời từ người dùng
+      const user = await User.findById(req.userId);
+      if (!user) {
+        return res.status(404).json({ message: "Người dùng không tìm thấy." });
+    }
+      const questionIds = Object.keys(userAnswers);
+      let questions;
+      // Lấy các câu hỏi từ database
+      if (subject === "bmtt") {
+          questions = await Question1.find({ _id: { $in: questionIds } });
+      } else if (subject === "ptdl") {
+           questions = await Question2.find({ _id: { $in: questionIds } });
+      } else {
+          return res.status(400).json({ message: "Môn học không hợp lệ." });
       }
-    });
 
-    // Cập nhật điểm số cho người dùng
-    const user = await User.findById(req.userId);
-   
-    
-    await user.save();
-
-    res.json({ score, total: questions.length }); // Trả về điểm số và tổng số câu hỏi
+      let score = 0;
+      questions.forEach((question) => {
+          const userAnswer = userAnswers[question._id]; // Lấy câu trả lời của người dùng theo _id
+          console.log(`User answer: ${userAnswer}, Correct answer: ${question.answer}`);
+          if (userAnswer === question.answer) {
+              score++;
+          }
+      });
+      if (subject === "bmtt") {
+        user.score1 = score;
+      } else if (subject === "ptdl") {
+        user.score2 = score;
+      } else {
+        return res.status(400).json({ message: "Môn học không hợp lệ." });
+      }
+      await user.save();
+      res.json({ score, total: questions.length });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Có lỗi xảy ra khi xử lý kết quả." });
+      console.error(error);
+      res.status(500).json({ message: "Có lỗi xảy ra khi xử lý kết quả." });
   }
 });
 app.post("/logout", verifyToken, async (req, res) => {
