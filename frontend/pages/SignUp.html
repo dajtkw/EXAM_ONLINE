@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký tài khoản</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            width: 800px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-top: 20px;
+            align-self: center;
+        }
+
+        .left-section {
+            background: linear-gradient(135deg, #303530, #66bb6a);
+            width: 50%;
+            padding: 30px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .left-section img {
+            max-width: 80%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .left-section h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .left-section p {
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .right-section {
+            width: 50%;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        input[type="tel"],
+        button {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        input[type="tel"] {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        input::placeholder {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 10px;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            background-color: #3e8e41;
+            transform: translateY(0);
+        }
+
+        #password-message {
+            display: none;
+            background: #ffffff;
+            color: #000;
+            position: relative;
+            padding: 20px;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        #password-message h3 {
+            font-size: 15px;
+            margin-top: 0;
+            text-transform: uppercase;
+        }
+
+        #password-message p {
+            margin: 8px 0;
+        }
+
+        .valid {
+            color: green;
+        }
+
+        .valid:before {
+            position: relative;
+            left: -35px;
+            content: "✔";
+        }
+
+        .invalid {
+            color: red;
+        }
+
+        .invalid:before {
+            position: relative;
+            left: -35px;
+            content: "✖";
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .support-info {
+            text-align: next;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 20px;
+        }
+        .login-link {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #333;
+            margin-top: 15px;
+        }
+
+        .login-link a {
+            color: #4caf50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        .g-recaptcha {
+            display: flex;
+            justify-content: center;
+            width: 90%;
+            margin: 20px auto ;
+            border-radius: 8px;
+            
+        }
+      
+      
+    </style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Left section with image and info -->
+        <div class="left-section">
+            <img src="https://th.bing.com/th/id/OIP.gDxDa8-fJ5oMNCk-9XL4oAHaEK?rs=1&pid=ImgDetMain" alt="Quản lý tài khoản">
+            <h3></h3>QUẢN LÝ TÀI KHOẢN</h3>
+            <p>Tạo tài khoản và bảo mật thông tin với tiêu chuẩn cao nhất, được nhiều khách hàng tin dùng.</p>
+        </div>
+
+        <!-- Right section with signup form -->
+        <div class="right-section">
+            <h2>Đăng ký</h2>
+            <form id="signup-form">
+                <input type="text" id="fullName" name="fullname" placeholder="Họ và tên" required />
+                <input type="date" id="birthDate" name="DayOfBirth" placeholder="Ngày sinh" required />
+                <input type="text" id="cccd" name="cccd" placeholder="CCCD" required pattern="^\d{12}$" title="CCCD phải là 12 chữ số" />
+                <input type="tel" id="phone" name="phonenumber" placeholder="Số điện thoại" required pattern="[0-9]{10}" />
+                <input type="email" class="group_email" id="email" name="email" placeholder="Email" required />
+                <input type="email" class="group_email" id="confirm_email" name="confirm_email" placeholder="Nhập lại email" required />
+                <input type="password" class="form-group" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).(?=.*[!@#$%^&*(),.?{}|<>]).{8,}" title="Phải chứa ít nhất một ký tự thường, một ký tự in hoa, một ký tự đặc biệt
+                   một chữ số, và ít nhất 8 ký tự" placeholder="Mật khẩu" required>
+                <input type="password" class="form-group" id="confirm_password" name="confirm_password" placeholder="Nhập lại mật khẩu">
+                <div id="password-message">
+                    <h3>Password phải chứa:</h3>
+                    <p class="password-message-item invalid">Ít nhất
+                        <b>1 ký tự đặc biệt</b>
+                    </p>
+                    <p class="password-message-item invalid">Ít nhất
+                        <b>1 ký tự thường</b>
+                    </p>
+                    <p class="password-message-item invalid">Ít nhất
+                        <b>1 ký tự in hoa</b>
+                    </p>
+                    <p class="password-message-item invalid">Ít nhất
+                        <b>1 ký tự số</b>
+                    </p>
+                    <p class="password-message-item invalid">Tối thiểu
+                        <b>8 ký tự</b>
+                    </p>
+                </div>
+                
+                <div id="error-message" class="error"></div>
+                <div class="g-recaptcha" data-sitekey="6Lel_2kqAAAAADq3IaxVB3PIpIGB_0awIK5FHvbu"></div>
+                <button type="submit">Đăng ký</button>
+            </form>
+            <div class="login-link">
+                <p>Bạn đã có tài khoản?   <br>   <a href="/login">Đăng nhập ngay</a></p>
+            </div>
+            <div class="support-info">
+                <strong>Điện thoại:</strong> +84 123 456 789<br>
+                <strong>Email:</strong> ptiendung644@gmail.com<br>
+                <strong>Email:</strong> btd1462004@gmail.com<br>
+                <strong>Email:</strong> hoangle3102004@gmail.com<br>
+            </div>
+        </div>
+    </div>
+    <script>
+        
+        document.getElementById('cccd').addEventListener('input', function (event) {
+            // Nếu độ dài đã đạt 12 thì không cho nhập thêm
+            if (this.value.length >= 12) {
+                this.value = this.value.slice(0, 12); // Giữ lại chỉ 12 ký tự
+            }
+        });
+
+        document.getElementById('phone').addEventListener('input', function (event) {
+            // Nếu độ dài đã đạt 10 thì không cho nhập thêm
+            if (this.value.length >= 10) {
+                this.value = this.value.slice(0, 10); // Giữ lại chỉ 10 ký tự
+            }
+        });
+        var passwordInput = document.getElementById("password");
+        var passwordMessageItems = document.getElementsByClassName("password-message-item");
+        var passwordMessage = document.getElementById("password-message");
+        var confirmPasswordInput = document.getElementById("confirm_password");
+        var errorMessage = document.getElementById("error-message");
+        var emailInput = document.getElementById("email")
+        var confirmEmailInput = document.getElementById("confirm_email")
+        
+        passwordInput.onfocus = function () {
+            passwordMessage.style.display = "block";
+        }
+
+        // After clicking outside of password input hide the message
+        passwordInput.onblur = function () {
+            passwordMessage.style.display = "none";
+        }
+
+        passwordInput.onkeyup = function () {
+
+            let specialCharRegex = /[!@#$%^&*(),.?{}|<>]/g;
+            if (passwordInput.value.match(specialCharRegex)) {
+                passwordMessageItems[0].classList.remove("invalid");
+                passwordMessageItems[0].classList.add("valid");
+            } else {
+                passwordMessageItems[0].classList.remove("valid");
+                passwordMessageItems[0].classList.add("invalid");
+            }
+            // checking uppercase letters
+            let uppercaseRegex = /[A-Z]/g;
+            if (passwordInput.value.match(uppercaseRegex)) {
+                passwordMessageItems[2].classList.remove("invalid");
+                passwordMessageItems[2].classList.add("valid");
+            } else {
+                passwordMessageItems[2].classList.remove("valid");
+                passwordMessageItems[2].classList.add("invalid");
+            }
+
+            // checking lowercase letters
+            let lowercaseRegex = /[a-z]/g;
+            if (passwordInput.value.match(lowercaseRegex)) {
+                passwordMessageItems[1].classList.remove("invalid");
+                passwordMessageItems[1].classList.add("valid");
+            } else {
+                passwordMessageItems[1].classList.remove("valid");
+                passwordMessageItems[1].classList.add("invalid");
+            }
+
+            // checking the number
+            let numbersRegex = /[0-9]/g;
+            if (passwordInput.value.match(numbersRegex)) {
+                passwordMessageItems[3].classList.remove("invalid");
+                passwordMessageItems[3].classList.add("valid");
+            } else {
+                passwordMessageItems[3].classList.remove("valid");
+                passwordMessageItems[3].classList.add("invalid");
+            }
+
+            // Checking length of the password
+            if (passwordInput.value.length >= 8) {
+                passwordMessageItems[4].classList.remove("invalid");
+                passwordMessageItems[4].classList.add("valid");
+            } else {
+                passwordMessageItems[4].classList.remove("valid");
+                passwordMessageItems[4].classList.add("invalid");
+            }
+        }
+
+        confirmEmailInput.onkeyup = function () {
+            
+            // Kiểm tra nếu mật khẩu xác nhận khớp với mật khẩu chính
+            if (confirmEmailInput.value === emailInput.value) {
+                errorMessage.textContent = ""; // Xóa thông báo lỗi
+                confirmPasswordInput.classList.remove("invalid");
+                confirmPasswordInput.classList.add("valid");
+            } else {
+                errorMessage.textContent = "Email không khớp"; // Hiển thị thông báo lỗi
+                confirmPasswordInput.classList.remove("valid");
+                confirmPasswordInput.classList.add("invalid");
+
+                
+            }
+        };
+
+        confirmPasswordInput.onkeyup = function () {
+            
+            // Kiểm tra nếu mật khẩu xác nhận khớp với mật khẩu chính
+            if (confirmPasswordInput.value === passwordInput.value) {
+                errorMessage.textContent = ""; // Xóa thông báo lỗi
+                confirmPasswordInput.classList.remove("invalid");
+                confirmPasswordInput.classList.add("valid");
+            } else {
+                errorMessage.textContent = "Mật khẩu không khớp"; // Hiển thị thông báo lỗi
+                confirmPasswordInput.classList.remove("valid");
+                confirmPasswordInput.classList.add("invalid");
+
+                
+            }
+        };
+        
+
+        document.getElementById('signup-form').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Ngăn chặn hành vi gửi form mặc định
+            if (confirmEmailInput.value !== emailInput.value) {
+                errorMessage.textContent = "Email không khớp";
+                grecaptcha.reset();
+                return;
+        
+            }
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                errorMessage.textContent = "Mật khẩu không khớp";
+                grecaptcha.reset();
+                return;
+        
+            } else {
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            try {
+                const response = await fetch("/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // Chuyển hướng đến trang xác minh email
+                    window.location.href = result.redirectUrl;
+                } else {
+                    grecaptcha.reset();
+                    errorMessage.textContent = result.message || "Đã xảy ra lỗi";
+                }
+            } catch (error) {
+                console.error("Lỗi trong quá trình đăng ký:", error);
+                grecaptcha.reset();
+                errorMessage.textContent = ("Đã xảy ra lỗi. Vui lòng thử lại.");
+            }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

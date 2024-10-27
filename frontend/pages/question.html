@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thi Trắc Nghiệm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Màu nền nhẹ nhàng */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative; /* Để sử dụng cho vị trí cố định */
+        }
+
+        h1 {
+            color: #333; /* Màu tiêu đề */
+            margin-bottom: 20px;
+        }
+
+        #quizForm {
+            background: white; /* Nền trắng cho form */
+            padding: 20px;
+            border-radius: 8px; /* Bo tròn các góc */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng cho form */
+            width: 100%;
+            max-width: 600px; /* Chiều rộng tối đa */
+        }
+
+        #questions div {
+            margin-bottom: 15px; /* Khoảng cách giữa các câu hỏi */
+            padding-bottom: 10px; /* Khoảng cách dưới cùng của câu hỏi */
+            border-bottom: 1px solid #e0e0e0; /* Đường kẻ dưới mỗi câu hỏi */
+        }
+
+        button {
+            background-color: #007BFF; /* Màu nền nút */
+            color: white; /* Màu chữ nút */
+            padding: 10px 20px; /* Padding cho nút */
+            border: none; /* Không có viền */
+            border-radius: 5px; /* Bo tròn cho nút */
+            font-size: 1em; /* Kích thước chữ cho nút */
+            cursor: pointer; /* Con trỏ chuột cho nút */
+            transition: background-color 0.3s; /* Hiệu ứng chuyển màu */
+            margin-top: 10px; /* Khoảng cách trên của nút */
+            display: block; /* Làm cho nút chiếm toàn bộ chiều rộng */
+            width: 100%; /* Chiều rộng 100% */
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Màu nền khi hover */
+        }
+
+        /* Thiết lập cho phần câu hỏi */
+        p {
+            font-weight: bold; /* In đậm câu hỏi */
+            margin: 0 0 5px; /* Loại bỏ khoảng cách mặc định và thêm khoảng cách dưới cùng */
+        }
+
+        /* Cải thiện giao diện nút radio */
+        input[type="radio"] {
+            margin-right: 10px; /* Khoảng cách bên phải cho nút radio */
+        }
+
+        /* Thiết lập cho bộ đếm thời gian */
+        #timer {
+            position: fixed; /* Vị trí cố định */
+            top: 20px; 
+            right: 20px; 
+            background-color: white; /* Nền trắng */
+            padding: 10px 15px; 
+            border-radius: 5px; 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Đổ bóng cho bộ đếm */
+            font-size: 1.2em; 
+            z-index: 1000; /* Đảm bảo bộ đếm nằm trên các phần khác */
+        }
+    </style>
+</head>
+<body>
+    <h1>Thi Trắc Nghiệm</h1>
+    <div id="timer">Thời gian còn lại: <span id="countdown">10:00</span></div>
+    <form id="quizForm">
+        <div id="questions"></div>
+        <button type="submit">Nộp Bài</button>
+    </form>
+
+    <script>
+        const quizDuration = 600; // Thời gian thi (600 giây = 10 phút)
+        let timeLeft = quizDuration;
+
+        const countdownElement = document.getElementById('countdown');
+
+        // Hàm cập nhật bộ đếm thời gian
+        function updateCountdown() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            countdownElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            timeLeft--;
+
+            // Nếu thời gian còn lại bằng 0, tự động nộp bài
+            if (timeLeft < 0) {
+                document.getElementById('quizForm').dispatchEvent(new Event('submit'));
+            }
+        }
+
+        // Gọi hàm cập nhật bộ đếm mỗi giây
+        setInterval(updateCountdown, 1000);
+
+        // Lấy câu hỏi từ server và hiển thị
+        fetch('/api/questions')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(questions => {
+                const questionsDiv = document.getElementById('questions');
+                questions.forEach((question) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.innerHTML = `<p>${question.question}</p>`;
+                    question.options.forEach(option => {
+                        questionDiv.innerHTML += `<label>
+                                                     <input type="radio" name="${question._id}" value="${option}" required>
+                                                     ${option}
+                                                 </label><br>`;
+                    });
+                    questionsDiv.appendChild(questionDiv);
+                });
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);
+                document.getElementById('questions').innerHTML = `<p>Không thể tải câu hỏi. Vui lòng thử lại sau.</p>`;
+            });
+
+        // Xử lý form nộp bài
+        document.getElementById('quizForm').onsubmit = function (event) {
+            event.preventDefault();
+            const formData = new FormData(quizForm);
+            const data = {};
+            for (const [key, value] of formData.entries()) {
+                data[key] = value; // key là _id của câu hỏi
+            }
+
+            fetch('/api/result', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(result => {
+                window.location.href = `result.html?score=${result.score}&total=${result.total}`;
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);
+                alert("Có lỗi xảy ra khi nộp bài. Vui lòng thử lại.");
+            });
+        };
+    </script>
+</body>
+</html>

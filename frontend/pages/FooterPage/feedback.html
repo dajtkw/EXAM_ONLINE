@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Đặt chiều cao tối thiểu cho body */
+            font-family: 'Segoe UI', Tahoma, sans-serif; /* Thêm font cho toàn trang */
+        }
+
+        .dashboard {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #4CAF50;
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .support-form {
+            flex: 1; /* Cho phép phần hỗ trợ chiếm không gian còn lại */
+            padding: 20px;
+            margin-top: 80px; /* Tạo khoảng cách dưới header */
+            border-bottom: 1px solid #ddd;
+        }
+
+        footer {
+            background-color: #3f5252;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: auto; /* Đẩy footer xuống dưới */
+        }
+
+        .footer-links {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: text-decoration 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+    <a class="dashboard" href="/">DDH TEAM</a>
+</head>
+<body>
+
+
+
+    <section class="support-form">
+        <h2>Hỗ trợ</h2>
+        <form id="supportForm" action="#" method="post">
+            <p>Nếu bạn cần bất kỳ hỗ trợ nào, vui lòng liên hệ với chúng tôi qua email: <a href="mailto:btd1462004@gmail.com">btd1462004@example.com</a>.</p>
+
+        <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p>
+        </form>
+    </section>
+
+
+    
+</body>
+<footer>
+    <div class="footer-links">
+        <a href="feedback.html">Feedback</a>
+        <a href="feedback.html">Help</a>
+        <a href="termsCondition.html">Terms & Conditions</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="about.html">About DDH</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="https://chatgpt.com/">Connect with a partner</a>
+        <a href="donate.html">Donate for our team</a>
+    </div>
+    <p>©2024 DDH Team.</p>
+</footer>
+</html>

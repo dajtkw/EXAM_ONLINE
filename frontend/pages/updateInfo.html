@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cập nhật Thông tin</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            width: 800px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .left-section {
+            background: linear-gradient(135deg, #303530, #66bb6a);
+            width: 50%;
+            padding: 30px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .left-section img {
+            max-width: 80%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .left-section h3 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .left-section p {
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .right-section {
+            width: 50%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4caf50;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .support-info {
+            text-align: next;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 15px;
+        }
+
+      
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-section">
+            <img src="https://th.bing.com/th/id/OIP.gDxDa8-fJ5oMNCk-9XL4oAHaEK?rs=1&pid=ImgDetMain" alt="Quản lý tài khoản">
+            <h3>QUẢN LÝ TÀI KHOẢN</h3>
+            <p>Tạo tài khoản và bảo mật thông tin với tiêu chuẩn cao nhất, được nhiều khách hàng tin dùng.</p>
+        </div>
+
+        <div class="right-section">
+            <h2>Cập nhật Thông tin</h2>
+            <form id="updateForm">
+                <label for="name">Xin chào:</label>
+                <input type="text" id="name"  required>
+
+                <label for="dob">Ngày sinh:</label>
+                <input type="date" id="dob" required>
+
+                <label for="cccd">CCCD:</label>
+                <input type="text" id="cccd" placeholder="CCCD" required pattern="^\d{12}$" title="CCCD phải là 12 chữ số">
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" placeholder="Email@example.com" readonly>
+
+                <label for="phone">Điện thoại:</label>
+                <input type="text" id="phone" placeholder="Số điện thoại" required pattern="[0-9]{10}">
+
+                <button type="button" onclick="updateInfo()">Cập nhật</button>
+            </form>
+            <div class="support-info">
+                <strong>Điện thoại:</strong> +84 123 456 789<br>
+                <strong>Email:</strong> ptiendung644@gmail.com<br>
+                <strong>Email:</strong> btd1462004@gmail.com<br>
+                <strong>Email:</strong> hoangle3102004@gmail.com<br>
+            </div>
+        </div>
+    </div>
+    <script>
+         document.getElementById('cccd').addEventListener('input', function (event) {
+            // Nếu độ dài đã đạt 12 thì không cho nhập thêm
+            if (this.value.length >= 12) {
+                this.value = this.value.slice(0, 12); // Giữ lại chỉ 12 ký tự
+            }
+        });
+
+          document.getElementById('phone').addEventListener('input', function (event) {
+            // Nếu độ dài đã đạt 10 thì không cho nhập thêm
+            if (this.value.length >= 10) {
+                this.value = this.value.slice(0, 10); // Giữ lại chỉ 10 ký tự
+            }
+        });
+        // Hàm để lấy thông tin người dùng từ server
+
+        async function fetchUserData() {
+    try {
+        const response = await fetch("/api/userInfo", {
+            method: "GET",
+            credentials: "include"
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            console.log("debug update", data.user);
+            console.log("debug name", data.user.name);
+            document.getElementById('name').value = data.user.name || '';
+
+            // Kiểm tra ngày sinh
+            if (data.user.dob) {
+                const dobFormatted = data.user.dob.split('T')[0];
+                console.log("debug dob", dobFormatted);
+                document.getElementById('dob').value = dobFormatted;
+            } else {
+                console.error("Ngày sinh không được cung cấp.");
+                document.getElementById('dob').value = '';
+            }
+
+            document.getElementById('cccd').value = data.user.cccd || '';
+            document.getElementById('email').value = data.user.email || ''; // Để nó trống nếu không có
+            document.getElementById('phone').value = data.user.phone || '';
+        } else {
+            console.error("Không thể lấy thông tin người dùng:", data.message);
+        }
+    } catch (error) {
+        console.error("Lỗi không lấy được thông tin người dùng:", error);
+    }
+}
+
+    
+        // Hàm để cập nhật thông tin
+        function updateInfo() {
+
+           
+
+            const name = document.getElementById('name').value;
+            const dob = document.getElementById('dob').value;
+            const cccd = document.getElementById('cccd').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            
+            const userData = {
+                name,
+                dob,
+                cccd,
+                phone,
+                email
+            };
+            console.log("debug", JSON.stringify(userData));
+            fetch("/api/updateUser", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                if (data.success) {
+                    alert("Cập nhật thông tin thành công!");
+                    window.location.href = "/";
+                } else {
+                    alert("Đã có lỗi xảy ra khi cập nhật: " + data.message);
+                }
+            });
+        }
+
+        // Gọi hàm để lấy dữ liệu người dùng khi tải trang
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchUserData();
+        });
+    </script>
+</body>
+
+</html>

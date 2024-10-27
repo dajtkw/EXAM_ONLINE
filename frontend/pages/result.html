@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết Quả</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #resultMessage {
+            margin: 20px 0;
+            font-size: 1.2rem;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #3f5252;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #3f5252;
+        }
+
+        footer {
+            width: 100%;
+            background-color: #3f5252;
+            color: white;
+            text-align: center;
+            margin-top: auto; 
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+    
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+        
+            transition: text-decoration 0.3s ease;
+           
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kết Quả Thi</h1>
+    <p id="resultMessage"></p>
+    <a href="/">Về Trang Chủ</a>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const score = urlParams.get('score');
+        const total = urlParams.get('total');
+
+        document.getElementById('resultMessage').innerText = `Bạn đã trả lời đúng ${score} trên ${total} câu hỏi.`;
+    </script>
+    
+    <footer>
+        <div class="footer-links">
+            <a href="./FooterPage/feedback.html">Feedback</a>
+            <a href="./FooterPage/help.html">Help</a>
+            <a href="./FooterPage/termsCondition.html">Terms & Conditions</a>
+            <a href="./FooterPage/privacy.html">Privacy</a>
+            <a href="./FooterPage/about.html">About DDH</a>
+            <a href="./FooterPage/contact.html">Contact Us</a>
+            <a href="https://chatgpt.com/">Connect with a partner</a>
+            <a href="./FooterPage/donate.html">Donate for our team</a>
+        </div>
+        <p>©2024 DDH Team.</p>
+    </footer>
+</body>
+</html>

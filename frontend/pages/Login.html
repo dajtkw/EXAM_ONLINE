@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập hệ thống thi online</title>
+    <style>
+        /* Thiết lập tổng quát cho trang */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Khung chứa hai phần login và thông tin */
+        .container {
+            display: flex;
+            width: 800px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* Phần bên trái với thông tin giới thiệu */
+        .left-section {
+            background: linear-gradient(135deg, #303530, #66bb6a);
+            width: 50%;
+            padding: 20px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .left-section img {
+            max-width: 80%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .left-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .left-section p {
+            font-size: 0.9rem;
+        }
+
+        /* Phần bên phải với form đăng nhập */
+        .right-section {
+            width: 50%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            color: #4caf50;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .tab-container button {
+            background: none;
+            border: none;
+            font-size: 16px;
+            padding: 10px;
+            cursor: pointer;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .tab-container button:hover {
+            color: #4caf50;
+        }
+
+        /* Form và các ô đầu vào */
+        #login-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        #login-form input[type="email"],
+        #login-form input[type="password"],
+        #login-form button {
+            width: 90%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 2px solid;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        #login-form input[type="email"],
+        #login-form input[type="password"] {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        #login-form input::placeholder {
+            color: #aaa;
+        }
+
+        #login-form button {
+            background-color: #4caf50;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+
+        #login-form button:hover {
+            background-color: #45a049;
+        }
+
+        #login-form button:active {
+            transform: scale(0.98);
+        }
+
+        /* Căn giữa reCAPTCHA */
+        .g-recaptcha {
+            display: flex;
+            justify-content: center;
+            width: 90%;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .direct-link {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            width: 90%;
+        }
+
+        .direct-link a {
+            text-decoration: none;
+            color: #4caf50;
+        }
+
+        .direct-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Phần thông tin hỗ trợ */
+        .support-info {
+            text-align: left;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 20px;
+            width: 90%;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+    </style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Left section with image and info -->
+        <div class="left-section">
+            <img src="https://th.bing.com/th/id/OIP.gDxDa8-fJ5oMNCk-9XL4oAHaEK?rs=1&pid=ImgDetMain" alt="Quản lý thi chứng chỉ online">
+            <h3>PHẦN MỀM THI CHỨNG CHỈ ONLINE</h3>
+            <p>Tính tiền nhanh chóng & vận hành ổn định với bảo mật cao được 230,000+ khách hàng tin dùng</p>
+        </div>
+
+        <!-- Right section with login form -->
+        <div class="right-section">
+            <div class="logo">DDH TEAM</div>
+            <div class="tab-container">
+                <button>Học sinh</button>
+                <button>Sinh viên</button>
+            </div>
+            <form id="login-form">
+                <input type="email" name="email" placeholder="Email@example.com" required />
+                <input type="password" name="password" placeholder="Mật khẩu" required />
+                <div class="g-recaptcha" data-sitekey="6Lel_2kqAAAAADq3IaxVB3PIpIGB_0awIK5FHvbu"></div>
+                <button type="submit">Đăng nhập</button>
+                <div id="error-message" style="color: red; margin-top: 10px;"></div> <!-- Added error message display -->
+            </form>
+            <div class="direct-link">
+                <a href="/forgot-password">Quên mật khẩu</a> | <a href="/signup">Đăng kí</a>
+            </div>
+            <div class="support-info">
+                <strong>Điện thoại:</strong> +84 123 456 789<br>
+                <strong>Email:</strong> ptiendung644@gmail.com<br>
+                <strong>Email:</strong> btd1462004@gmail.com<br>
+                <strong>Email:</strong> hoangle3102004@gmail.com<br>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (e) => { // Fixed the selector
+            e.preventDefault();
+            const errorMessageElement = document.getElementById('error-message');
+            errorMessageElement.textContent = ''; // Xóa thông báo lỗi trước khi gửi
+
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            // Gửi yêu cầu đăng nhập
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // Chuyển hướng nếu đăng nhập thành công
+                    alert("Xác thực tài khoản");
+                    window.location.href = result.redirectUrl;
+                } else {
+                    grecaptcha.reset();
+                    // Hiện thông báo lỗi nếu có
+                    errorMessageElement.textContent = result.message || "Đã xảy ra lỗi";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                grecaptcha.reset();
+                errorMessageElement.textContent = "Đã xảy ra lỗi. Vui lòng thử lại.";
+            }
+        });
+    </script>
+</body>
+</html>

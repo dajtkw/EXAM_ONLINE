@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chào Mừng - EduQuiz</title>
+    <style>
+        /* CSS chung cho body */
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        /* Thanh tiêu đề cố định ở trên cùng */
+        .dashboard {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #4CAF50;
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        /* Phần nội dung chính */
+        .content {
+            text-align: center;
+            max-width: 600px;
+            padding-top: 80px;
+        }
+
+        /* Phong cách cho văn bản nổi bật */
+        .highlight-text {
+            color: #46404a; /* Màu tím nhạt */
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: color 0.3s ease, background-color 0.3s ease;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        /* Hiệu ứng hover cho liên kết */
+      
+
+        /* Phong cách cho tiêu đề chính */
+        h1 {
+            color: #1f6f1f;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        /* Phong cách cho nút */
+        .button {
+            margin: 10px;
+            padding: 12px 24px;
+            color: white;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        /* Hiệu ứng hover cho nút */
+        .button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Căn chỉnh footer ở dưới cùng */
+        footer {
+            background-color: #3f5252;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .footer-links {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: text-decoration 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Thanh tiêu đề -->
+    <header>
+        <a class="dashboard" href="/">DDH</a>
+    </header>
+
+    <!-- Nội dung chính -->
+    <div class="content">
+        <a href="#" class="highlight-text">#1 Nền tảng thi trắc nghiệm online tốt nhất</a>
+        <h1>Chào mừng đến với DDH !</h1>
+        <p class="highlight-text">Giải pháp tạo đề thi chứng chỉ nhanh chóng và dễ dàng  . Tận dụng sức mạnh công nghệ để  trải nghiệm học tập của bạn ngay hôm nay.</p>
+        <button class="button" id="signupBtn">Đăng ký</button>
+        <button class="button" id="loginBtn">Đăng nhập</button>
+    </div>
+
+    <script>
+        document.getElementById('signupBtn').onclick = function () {
+            alert('Đi tới trang đăng ký');
+            window.location.href = '/signup';
+        };
+        document.getElementById('loginBtn').onclick = function () {
+            alert('Đi tới trang đăng nhập');
+            window.location.href = '/login';
+        };
+    </script>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="./FooterPage/feedback.html">Feedback</a>
+            <a href="./FooterPage/help.html">Help</a>
+            <a href="./FooterPage/termsCondition.html">Terms & Conditions</a>
+            <a href="./FooterPage/privacy.html">Privacy</a>
+            <a href="./FooterPage/about.html">About EduQuiz</a>
+            <a href="./FooterPage/contact.html">Contact Us</a>
+            <a href="https://chatgpt.com/">Connect with a partner</a>
+            <a href="./FooterPage/donate.html">Donate for our team</a>
+        </div>
+        <p>©2024 DDHTEAM.</p>
+    </footer>
+</body>
+
+</html>
