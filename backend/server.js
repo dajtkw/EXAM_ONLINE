@@ -40,8 +40,8 @@ const generateTokenAndSetCookie = (res, userId) => {
   return token;
 };
 const apiLimiter = rateLimit({ //Ngăn chặn brute force bằng cách giới hạn truy cập
-  windowMs: 60 * 1000, // 1 minutes
-  max: 2,
+  windowMs:15* 60 * 1000, // 1 minutes
+  max: 100,
   handler: function (req, res) {
       res.status(429).send({
           status: 500,
